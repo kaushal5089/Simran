@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Simran ❤️</title>
+
+<style>
+    body {
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        font-family: 'Segoe UI', sans-serif;
+        overflow: hidden;
+    }
+
+    .container {
+        background: white;
+        padding: 40px 50px;
+        border-radius: 25px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        z-index: 10;
+        animation: popIn 1s ease;
+    }
+
+    @keyframes popIn {
+        from { transform: scale(0.5); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+        color: #ff4d6d;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-weight: normal;
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        position: relative;
+        height: 80px;
+        margin-top: 10px;
+    }
+
+    button {
+        padding: 14px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: transform 0.4s ease;
+    }
+
+    #yesBtn {
+        background-color: #ff4d6d;
+        color: white;
+        position: relative;
+        z-index: 5;
+    }
+
+    #noBtn {
+        background-color: #adb5bd;
+        color: white;
+        position: absolute;
+        left: 140px;
+    }
+
+    #counterText {
+        margin-top: 15px;
+        font-size: 18px;
+        color: #555;
+        display: none;
+    }
+
+    #message {
+        display: none;
+        margin-top: 25px;
+        font-size: 26px;
+        color: #ff4d6d;
+        animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating hearts */
+    .heart {
+        position: absolute;
+        font-size: 20px;
+        animation: floatUp 6s linear infinite;
+        opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+        from { transform: translateY(100vh); }
+        to { transform: translateY(-10vh); }
+    }
+
+    /* Fake popup */
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px 35px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        text-align: center;
+        display: none;
+        z-index: 20;
+        animation: popIn 0.5s ease;
+    }
+
+    .popup h3 {
+        color: #ff4d6d;
+    }
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Non-copyrighted romantic music -->
+<audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5f5b5c2c88.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <h1>Hey Simran 💖</h1>
+    <h2>Will you be my Valentine?</h2>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes ❤️</button>
+        <button id="noBtn">No 🙈</button>
+    </div>
+
+    <div id="counterText">You tried to say NO 0 times 😏</div>
+
+    <div id="message">
+        YAYYY!! 💕  
+        You just made my day, Simran 😍
+    </div>
+</div>
+
+<div class="popup" id="popup">
+    <h3>Did you mean YES?! 😄</h3>
+    <p>I think you did 💖</p>
+</div>
+
+<script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const message = document.getElementById("message");
+    const popup = document.getElementById("popup");
+    const counterText = document.getElementById("counterText");
+    const music = document.getElementById("bgMusic");
+
+    let yesScale = 1;
+    let noCount = 0;
+
+    // Start music on first interaction
+    document.addEventListener("click", () => {
+        if (music.paused) {
+            music.volume = 0.4;
+            music.play();
+        }
+    }, { once: true });
+
+    // NO button interaction
+    noBtn.addEventListener("mouseover", () => {
+        noCount++;
+        counterText.style.display = "block";
+
+        if (noCount < 5) {
+            counterText.innerText = `You tried to say NO ${noCount} times 😏`;
+        } else {
+            counterText.innerText = "Okay okay… just click YES already 💖";
+        }
+
+        popup.style.display = "block";
+        setTimeout(() => popup.style.display = "none", 800);
+
+        const x = Math.random() * 300 - 150;
+        const y = Math.random() * 200 - 100;
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+
+        yesScale += 0.3;
+        yesBtn.style.transform = `scale(${yesScale})`;
+
+        if (yesScale >= 4) {
+            yesBtn.style.position = "fixed";
+            yesBtn.style.top = "0";
+            yesBtn.style.left = "0";
+            yesBtn.style.width = "100vw";
+            yesBtn.style.height = "100vh";
+            yesBtn.style.borderRadius = "0";
+            yesBtn.style.fontSize = "48px";
+        }
+    });
+
+    // YES click
+    yesBtn.addEventListener("click", () => {
+        message.style.display = "block";
+        createConfetti();
+    });
+
+    // Floating hearts
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 10 + 15) + "px";
+        heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 300);
+
+    // Confetti
+    function createConfetti() {
+        for (let i = 0; i < 40; i++) {
+            const c = document.createElement("div");
+            c.innerHTML = "🎉";
+            c.style.position = "absolute";
+            c.style.left = Math.random() * 100 + "vw";
+            c.style.top = "-20px";
+            c.style.fontSize = "24px";
+            c.style.animation = "floatUp 3s linear";
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 3000);
+        }
+    }
+</script>
+
+</body>
+</html>
